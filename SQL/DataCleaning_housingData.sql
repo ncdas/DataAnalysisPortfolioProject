@@ -120,8 +120,27 @@ SET SoldAsVacant = CASE WHEN SoldAsVacant = 'Y' THEN 'Yes'
 	END;
 
 
+--REmove Duplicates
 
-	
+WITH THECTE AS (
+SELECT *, 
+	ROW_NUMBER() OVER (
+	PARTITION by ParcelID, PropertyAddress, SalePrice, Sale_Date, LegalReference
+	Order by UniqueID ) as row_num
+
+FROM [CovidProject].[dbo].[NashvilleHousingData ]	)
+
+DELETE 
+FROM THECTE
+WHERE row_num >1
+
+
+--DELETE UNUSED COLUMNS
+SELECT *
+FROM [CovidProject].[dbo].[NashvilleHousingData ]
+
+ALTER TABLE [CovidProject].[dbo].[NashvilleHousingData ]
+DROP COLUMN PropertyAddress, OwnerAddress 
 
 
 
