@@ -102,3 +102,28 @@ Owner_State = PARSENAME(REPLACE(OwnerAddress, ', ' , '.') ,1)
 
 SELECT *
 FROM [CovidProject].[dbo].[NashvilleHousingData ]
+
+--Change Y and N to Yes and No in "Sold as Vacant" field
+
+--Lets look at distinct values of the SoldAsVacant column
+
+Select distinct SoldAsVacant, COUNT(SoldAsVacant)
+FROM [CovidProject].[dbo].[NashvilleHousingData ]
+Group by SoldAsVacant
+Order by 2
+
+
+UPDATE [CovidProject].[dbo].[NashvilleHousingData ]
+SET SoldAsVacant = CASE WHEN SoldAsVacant = 'Y' THEN 'Yes'
+		WHEN SoldAsVacant = 'N' THEN 'No'
+		ELSE SoldAsVacant
+	END;
+
+
+
+	
+
+
+
+
+
